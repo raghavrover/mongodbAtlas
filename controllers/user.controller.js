@@ -15,7 +15,7 @@ const registerUser = async (req, res) => {
     });
 
     // Retrieving the data from the DB
-    const createdUser = await User.findById(user._id).select("*");
+    const createdUser = await User.findById(user._id);
     res.json({ ...createdUser });
   } catch (error) {
     //TODO: Handle the error carefully and make sure you end the req-res cycle
@@ -27,7 +27,7 @@ const registerUser = async (req, res) => {
   }
 };
 
-const getUser = (req, res) => {
+const getUser = async (req, res) => {
   res.send({
     username: "tester",
     password: "test@123",
@@ -35,4 +35,11 @@ const getUser = (req, res) => {
   });
 };
 
-export { registerUser, getUser };
+const getAllUsers = async (req, res) => {
+  // fetch all the users from the collection
+
+  const allUsers = await User.find();
+  res.json(allUsers);
+};
+
+export { registerUser, getUser, getAllUsers };

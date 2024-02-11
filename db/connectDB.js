@@ -4,10 +4,8 @@ import { DB_NAME } from "../constants.js";
 async function connectDB() {
   try {
     const connection = await mongoose.connect(
-      `${process.env.MONGODB_URI}/${DB_NAME}/?retryWrites=true&w=majority`,
+      `${process.env.MONGODB_URI}/${DB_NAME}`,
       {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
         serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds if no server is selected
         writeConcern: {
           w: "majority",
