@@ -1,0 +1,21 @@
+{
+  "name": "samplebackend",
+  "version": "1.0.0",
+  "description": "just to hang around with server and db",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon -r dotenv/config --experimental-json-modules index.js"
+  },
+  "author": "rover",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "mongoose": "^8.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
