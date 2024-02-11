@@ -16,6 +16,8 @@ const registerUser = async (req, res) => {
 
     // Retrieving the data from the DB
     const createdUser = await User.findById(user._id);
+    // console.log("fetched from the db", createdUser);
+
     res.json({ ...createdUser });
   } catch (error) {
     //TODO: Handle the error carefully and make sure you end the req-res cycle
@@ -23,23 +25,56 @@ const registerUser = async (req, res) => {
       "Error ocurred while communicating with the database",
       error.message
     );
-    res.send("Error ocurred while communicating with the database");
+    res
+      .status(400)
+      .json(
+        "Error ocurred while communicating with the database",
+        error.message
+      );
   }
 };
 
 const getUser = async (req, res) => {
-  res.send({
-    username: "tester",
-    password: "test@123",
-    email: "test@gmail.com",
-  });
+  // fetch a user from the collection with a doc_id
+  try {
+    const { id } = req.params;
+    const user = await User.find({ _id: id });
+    // console.log("fetched from the db", user);
+    res.status(200).json(user);
+  } catch (error) {
+    //TODO: Handle the error carefully and make sure you end the req-res cycle
+    console.log(
+      "Error ocurred while communicating with the database",
+      error.message
+    );
+    res
+      .status(400)
+      .json(
+        "Error ocurred while communicating with the database",
+        error.message
+      );
+  }
 };
 
 const getAllUsers = async (req, res) => {
   // fetch all the users from the collection
-
-  const allUsers = await User.find();
-  res.json(allUsers);
+  try {
+    const allUsers = await User.find();
+    // console.log("fetched from the db", allUsers);
+    res.json(allUsers);
+  } catch (error) {
+    //TODO: Handle the error carefully and make sure you end the req-res cycle
+    console.log(
+      "Error ocurred while communicating with the database",
+      error.message
+    );
+    res
+      .status(400)
+      .json(
+        "Error ocurred while communicating with the database",
+        error.message
+      );
+  }
 };
 
 export { registerUser, getUser, getAllUsers };

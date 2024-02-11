@@ -8,6 +8,6 @@ import {
 const userRouter = Router();
 
 userRouter.route("/register").post(registerUser);
-userRouter.route("/get-user").get(getUser);
-userRouter.route("/all-users").get(getAllUsers);
+userRouter.route("/all-users").get(getAllUsers); // make sure api endpoints not to conflict
+userRouter.route("/:id").get(getUser);
 export { userRouter };

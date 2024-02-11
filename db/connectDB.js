@@ -1,17 +1,10 @@
 import mongoose from "mongoose";
-import { DB_NAME } from "../constants.js";
+import { DB_NAME_1, DB_NAME_2 } from "../constants.js";
 
 async function connectDB() {
   try {
     const connection = await mongoose.connect(
-      `${process.env.MONGODB_URI}/${DB_NAME}`,
-      {
-        serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds if no server is selected
-        writeConcern: {
-          w: "majority",
-          j: true, // If you want to wait for the journal commit
-        },
-      }
+      `${process.env.MONGODB_URI}/${DB_NAME_2}`
     );
 
     console.log("Connection established successfully");
