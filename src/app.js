@@ -11,7 +11,7 @@ app.use("/api/v1/users", userRouter);
 // Middleware to define common error handling
 app.use((err, req, res, next) => {
   // Log the error for debugging
-  console.error(err.stack, ": Error ocurred");
+  // console.error(err.stack, ": Error ocurred");
 
   // Choose an appropriate HTTP status code based on the error type
   let statusCode = 500; // Internal Server Error by default

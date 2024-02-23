@@ -11,13 +11,14 @@ const registerUser = async (req, res, next) => {
       ? { username, password, email, nickname }
       : { username, password, email };
     // Didn't validate the user credentials and sending directly to the DB
-    const user = await User.create(userDetails);
+    const createdUser = await User.create(userDetails);
 
     // Retrieving the data from the DB
-    const createdUser = await User.findById(user._id);
-    // console.log("fetched from the db", createdUser);
+    const user = await User.findById(createdUser._id).select(
+      "-password -createdAt -updatedAt -__v"
+    );
 
-    res.json({ ...createdUser });
+    res.status(201).json(user);
   } catch (error) {
     //TODO: Handle the error carefully and make sure you end the req-res cycle
     console.log(
@@ -25,22 +26,16 @@ const registerUser = async (req, res, next) => {
       error.message
     );
     next(error);
-    console.log("Just for testing");
-    // res
-    //   .status(400)
-    //   .json(
-    //     "Error ocurred while communicating with the database :",
-    //     error.message
-    //   );
   }
 };
 
-const getUser = async (req, res) => {
+const getUser = async (req, res, next) => {
   // fetch a user from the collection with a doc_id
   try {
     const { id } = req.params;
     const user = await User.find({ _id: id });
-    // console.log("fetched from the db", user);
+
+    // console.log("fetched from the db", user?._doc, user);
     res.status(200).json(user);
   } catch (error) {
     //TODO: Handle the error carefully and make sure you end the req-res cycle
@@ -48,16 +43,11 @@ const getUser = async (req, res) => {
       "Error ocurred while communicating with the database :",
       error.message
     );
-    res
-      .status(400)
-      .json(
-        "Error ocurred while communicating with the database :",
-        error.message
-      );
+    next(error);
   }
 };
 
-const getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res, next) => {
   // fetch all the users from the collection
   try {
     const allUsers = await User.find();
@@ -69,12 +59,7 @@ const getAllUsers = async (req, res) => {
       "Error ocurred while communicating with the database :",
       error.message
     );
-    res
-      .status(400)
-      .json(
-        "Error ocurred while communicating with the database :",
-        error.message
-      );
+    next(error);
   }
 };
 
