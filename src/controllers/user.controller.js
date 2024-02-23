@@ -1,18 +1,17 @@
 import { User } from "../models/user.model.js";
 
-const registerUser = async (req, res) => {
+const registerUser = async (req, res, next) => {
   // basically we are taking data from the user
   // and adding an entry in the database
 
   try {
-    const { username, password, email } = req.body;
+    const { username, password, email, nickname = "" } = req.body;
 
+    const userDetails = nickname
+      ? { username, password, email, nickname }
+      : { username, password, email };
     // Didn't validate the user credentials and sending directly to the DB
-    const user = await User.create({
-      username,
-      password,
-      email,
-    });
+    const user = await User.create(userDetails);
 
     // Retrieving the data from the DB
     const createdUser = await User.findById(user._id);
@@ -22,15 +21,17 @@ const registerUser = async (req, res) => {
   } catch (error) {
     //TODO: Handle the error carefully and make sure you end the req-res cycle
     console.log(
-      "Error ocurred while communicating with the database",
+      "Error ocurred while communicating with the database :",
       error.message
     );
-    res
-      .status(400)
-      .json(
-        "Error ocurred while communicating with the database",
-        error.message
-      );
+    next(error);
+    console.log("Just for testing");
+    // res
+    //   .status(400)
+    //   .json(
+    //     "Error ocurred while communicating with the database :",
+    //     error.message
+    //   );
   }
 };
 
@@ -44,13 +45,13 @@ const getUser = async (req, res) => {
   } catch (error) {
     //TODO: Handle the error carefully and make sure you end the req-res cycle
     console.log(
-      "Error ocurred while communicating with the database",
+      "Error ocurred while communicating with the database :",
       error.message
     );
     res
       .status(400)
       .json(
-        "Error ocurred while communicating with the database",
+        "Error ocurred while communicating with the database :",
         error.message
       );
   }
@@ -65,13 +66,13 @@ const getAllUsers = async (req, res) => {
   } catch (error) {
     //TODO: Handle the error carefully and make sure you end the req-res cycle
     console.log(
-      "Error ocurred while communicating with the database",
+      "Error ocurred while communicating with the database :",
       error.message
     );
     res
       .status(400)
       .json(
-        "Error ocurred while communicating with the database",
+        "Error ocurred while communicating with the database :",
         error.message
       );
   }

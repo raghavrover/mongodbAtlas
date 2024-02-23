@@ -8,8 +8,9 @@ async function connectDB() {
     );
 
     console.log("Connection established successfully");
+    return connection;
   } catch (err) {
-    console.log("MongoDB Server error", err);
+    // console.log("MongoDB Server error", err);
     throw err;
   }
 }
