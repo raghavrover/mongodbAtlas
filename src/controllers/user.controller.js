@@ -5,20 +5,59 @@ const registerUser = async (req, res, next) => {
   // and adding an entry in the database
 
   try {
-    const { username, password, email, nickname = "" } = req.body;
+    const {
+      tenant_name,
+      room_no,
+      mobile_number,
+      aadhaar,
+      joined_date,
+      tenant_status = "Active",
+      security_deposit_amount = "2000",
+      security_deposit_status = "Paid",
+      rent_amount = "6000",
+    } = req.body;
 
-    const userDetails = nickname
-      ? { username, password, email, nickname }
-      : { username, password, email };
-    // Didn't validate the user credentials and sending directly to the DB
-    const createdUser = await User.create(userDetails);
+    // const userDetails = nickname
+    //   ? { username, password, email, nickname, age }
+    //   : { username, password, email, age };
 
-    // Retrieving the data from the DB
-    const user = await User.findById(createdUser._id).select(
-      "-password -createdAt -updatedAt -__v"
-    );
+    const checkStatus =
+      tenant_name !== "" &&
+      room_no !== "" &&
+      mobile_number !== "" &&
+      aadhaar !== "" &&
+      joined_date !== "" &&
+      tenant_status !== "" &&
+      security_deposit_amount !== "" &&
+      security_deposit_status !== "" &&
+      rent_amount !== "";
 
-    res.status(201).json(user);
+    if (checkStatus) {
+      const tenantDetails = {
+        tenant_name,
+        room_no,
+        mobile_number,
+        aadhaar,
+        joined_date,
+        tenant_status,
+        security_deposit_amount,
+        security_deposit_status,
+        rent_amount,
+      };
+
+      // Didn't validate the user credentials and sending directly to the DB
+      const createdUser = await User.create(tenantDetails);
+
+      // Retrieving the data from the DB
+      const user = await User.findById(createdUser._id);
+
+      res.status(201).json({
+        ok: true,
+        user,
+      });
+    } else {
+      throw new Error("Invalid User details");
+    }
   } catch (error) {
     //TODO: Handle the error carefully and make sure you end the req-res cycle
     console.log(
@@ -63,4 +102,28 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
-export { registerUser, getUser, getAllUsers };
+const updateUser = async (req, res, next) => {
+  const { username } = req.body;
+  // updated the user in the collection
+  try {
+    const operationDetails = await User.updateOne(
+      {
+        username,
+      },
+      {
+        $unset: { age: 1 },
+      }
+    );
+    // console.log("fetched from the db", updatedUser);
+    res.json(operationDetails);
+  } catch (error) {
+    //TODO: Handle the error carefully and make sure you end the req-res cycle
+    console.log(
+      "Error ocurred while communicating with the database :",
+      error.message
+    );
+    next(error);
+  }
+};
+
+export { registerUser, getUser, getAllUsers, updateUser };

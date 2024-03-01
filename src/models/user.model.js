@@ -2,19 +2,39 @@ import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema(
   {
-    username: {
+    tenant_name: {
       type: String,
       required: true,
     },
-    password: {
-      type: String,
-      required: [true, "Password is required"],
-    },
-    email: {
+    room_no: {
       type: String,
       required: true,
     },
-    nickname: {
+    mobile_number: {
+      type: String,
+      required: true,
+    },
+    aadhaar: {
+      type: String,
+      required: true,
+    },
+    joined_date: {
+      type: String,
+      required: true,
+    },
+    tenant_status: {
+      type: String,
+      required: true,
+    },
+    security_deposit_amount: {
+      type: String,
+      required: true,
+    },
+    security_deposit_status: {
+      type: String,
+      required: true,
+    },
+    rent_amount: {
       type: String,
       required: true,
     },

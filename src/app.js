@@ -3,7 +3,13 @@ import { userRouter } from "./routers/user.router.js";
 
 const app = express();
 
+const corsOptions = {
+  origin: "https://collecttenantdata.netlify.app",
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
 app.use(express.json({ limit: "16kb" }));
+app.use(cors(corsOptions));
 // app.use(express.urlencoded({ limit: "16kb" }));
 
 app.use("/api/v1/users", userRouter);
@@ -27,6 +33,7 @@ app.use((err, req, res, next) => {
 
   // Create an error response object with a clear message and details
   const errorResponse = {
+    ok: false,
     message: "Something went wrong.", // Customize for specific errors
     details: err.message || "An unexpected error occurred.", // Provide more details if appropriate
   };

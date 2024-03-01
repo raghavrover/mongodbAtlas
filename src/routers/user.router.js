@@ -3,6 +3,7 @@ import {
   registerUser,
   getUser,
   getAllUsers,
+  updateUser,
 } from "../controllers/user.controller.js";
 
 const userRouter = Router();
@@ -10,4 +11,5 @@ const userRouter = Router();
 userRouter.route("/register").post(registerUser);
 userRouter.route("/all-users").get(getAllUsers); // make sure api endpoints not to conflict
 userRouter.route("/:id").get(getUser);
+userRouter.route("/:d").patch(updateUser);
 export { userRouter };
